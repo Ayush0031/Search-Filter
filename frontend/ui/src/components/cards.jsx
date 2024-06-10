@@ -1,17 +1,16 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
-function Cards() {
+function Cards(props) {
   return (
-    <Card style={{ width: '18rem' }}>
-      <Card.Img variant="top" src="holder.js/100px180" />
+    <Card style={{ width: "18rem", maxHeight: "360px",margin:"10px" }}>
+      <Card.Img variant="top" src={props.data.image}  style={{ height: "150px", objectFit: "fill" }} />
       <Card.Body>
-        <Card.Title>Card Title</Card.Title>
+        <Card.Title>{props.data.name}</Card.Title>
         <Card.Text>
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
+          {props.data.category}
         </Card.Text>
-        <Button variant="primary">Go somewhere</Button>
+        <h4>Price ₹{props.data.price}</h4>
       </Card.Body>
     </Card>
   );

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Header from '../components/Header'
+import Cards from '../components/Cards'
+
 export default function Home() {
     const [data,setData]=useState([])
     useEffect(()=>{
@@ -12,8 +14,16 @@ export default function Home() {
     },[])
   return (
    <>
+
         <Header/>
-   
+        <div className="container" style={{display:"flex"}}>
+        {
+            data.map((d)=>{
+                return <Cards data={d} key={d._id}  />
+            })
+        }
+        </div>
+        
    </>
   )
 }
