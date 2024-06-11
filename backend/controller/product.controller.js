@@ -37,6 +37,7 @@ const productSearch= async(req,res)=>{
 
         const products = await Product.find(query);
         console.log(query)
+        console.log(products)
         res.json(products);
     } catch (err) {
         console.error(err);

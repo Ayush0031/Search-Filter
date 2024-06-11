@@ -28,6 +28,22 @@ export default function Home() {
         setPriceRange(value);
         console.log(priceRange)
     };
+    const handleSearch = async () => {
+        try {
+            const response = await axios.get('http://localhost:5001/api/v1/products/search', {
+                params: {
+                    query: searchQuery,
+                    categories: selectedCategories.join(','),
+                    minPrice: priceRange[0],
+                    maxPrice: priceRange[1]
+                }
+            });
+            setProducts(response.data);
+            console.log(response.data)
+        } catch (error) {
+            alert("Error searching products:", error);
+        }
+    };
     return (
         <>
 
@@ -39,7 +55,8 @@ export default function Home() {
                             <Form.Control
                                 type="text"
                                 placeholder="Search..."
-
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
                             />
                         </Col>
                     </Row>
@@ -74,7 +91,7 @@ export default function Home() {
                     </Row>
                     <Row className="mb-3">
                         <Col>
-                            <Button variant="primary" >Search</Button>
+                            <Button variant="primary" onClick={handleSearch} >Search</Button>
                         </Col>
                     </Row>
                     <Row >
