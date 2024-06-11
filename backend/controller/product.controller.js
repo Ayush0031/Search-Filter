@@ -16,4 +16,7 @@ const getAllProducts= async(req,res)=>{
         res.status(500).send({msg:"Not able to add products"})
     }
 }
-module.exports={addProduct,getAllProducts}
+const productSearch= async(req,res)=>{
+
+}
+module.exports={addProduct,getAllProducts,productSearch}
