@@ -26,20 +26,26 @@ export default function Home() {
     }, [])
     const handleSliderChange = (value) => {
         setPriceRange(value);
-        console.log(priceRange)
     };
+    const handleCategoryChange = (category) => {
+        setSelectedCategories({
+            ...selectedCategories,
+            [category]: !selectedCategories[category]
+        });
+    }
     const handleSearch = async () => {
         try {
+            const selectedCategoryNames = Object.keys(selectedCategories).filter(category => selectedCategories[category]);
             const response = await axios.get('http://localhost:5001/api/v1/products/search', {
                 params: {
                     query: searchQuery,
-                    categories: selectedCategories.join(','),
+                    categories: selectedCategoryNames.join(','),
                     minPrice: priceRange[0],
                     maxPrice: priceRange[1]
                 }
             });
             setProducts(response.data);
-            console.log(response.data)
+            console.log(response.data);
         } catch (error) {
             alert("Error searching products:", error);
         }
@@ -65,10 +71,11 @@ export default function Home() {
                             <div className="category-filters">
                                 {categories.map(category => (
                                     <Form.Check
-                                        key={category}
-                                        type="checkbox"
-                                        label={category}
-
+                                    key={category}
+                                    type="checkbox"
+                                    label={category}
+                                    checked={selectedCategories[category]}
+                                    onChange={() => handleCategoryChange(category)}
                                     />
                                 ))}
                             </div>
