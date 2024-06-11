@@ -17,6 +17,30 @@ const getAllProducts= async(req,res)=>{
     }
 }
 const productSearch= async(req,res)=>{
+    try {
+        let query = {};
 
+        // Search by name
+        if (req.query.query) {
+            query.name = { $regex: req.query.query, $options: 'i' };
+        }
+
+        // Filter by category
+        if (req.query.categories) {
+            query.category = { $in: req.query.categories.split(',') };
+        }
+
+        // Filter by price range
+        if (req.query.minPrice && req.query.maxPrice) {
+            query.price = { $gte: req.query.minPrice, $lte: req.query.maxPrice };
+        }
+
+        const products = await Product.find(query);
+        console.log(query)
+        res.json(products);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' });
+    }
 }
 module.exports={addProduct,getAllProducts,productSearch}
