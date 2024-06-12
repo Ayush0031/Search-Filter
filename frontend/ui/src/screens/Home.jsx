@@ -11,6 +11,7 @@ export default function Home() {
     const [selectedCategories, setSelectedCategories] = useState({});
     const [priceRange, setPriceRange] = useState([100, 1000000]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [sortOrder, setSortOrder] = useState(''); 
     useEffect(() => {
         const fetchproducts = async () => {
             const data = await axios.get("http://localhost:5001/api/v1/products/all");
@@ -27,6 +28,9 @@ export default function Home() {
     const handleSliderChange = (value) => {
         setPriceRange(value);
     };
+    const handleSortChange = (e) => {
+        setSortOrder(e.target.value);
+    }
     const handleCategoryChange = (category) => {
         setSelectedCategories({
             ...selectedCategories,
@@ -44,6 +48,15 @@ export default function Home() {
                     maxPrice: priceRange[1]
                 }
             });
+            let sortedProducts = response.data;
+
+            if (sortOrder === 'asc') {
+                sortedProducts = sortedProducts.sort((a, b) => a.price - b.price);
+            } else if (sortOrder === 'desc') {
+                sortedProducts = sortedProducts.sort((a, b) => b.price - a.price);
+            }
+
+            setProducts(sortedProducts);
             setProducts(response.data);
             console.log(response.data);
         } catch (error) {
@@ -54,7 +67,7 @@ export default function Home() {
         <>
 
             <Header />
-            <div className="container m-5">
+            <div className="container m-2">
                 <Container className="my-4">
                     <Row className="mb-3">
                         <Col>
@@ -83,7 +96,7 @@ export default function Home() {
                     </Row>
                     <Row className="mb-3">
                         <Col>
-                            <div className="price-range-slider">
+                            <div className="price-range-slider" style={{width:"40%"}}>
                                 <label>Price Range:</label>
                                 <Slider
                                     range
@@ -94,6 +107,15 @@ export default function Home() {
                                 />
                                 <div>₹{priceRange[0]} - ₹{priceRange[1]}</div>
                             </div>
+                        </Col>
+                    </Row>
+                    <Row className="mb-3">
+                        <Col  style={{width:"40%"}}>
+                            <Form.Select onChange={handleSortChange}>
+                                <option value="">Sort by Price</option>
+                                <option value="asc">Low to High</option>
+                                <option value="desc">High to Low</option>
+                            </Form.Select>
                         </Col>
                     </Row>
                     <Row className="mb-3">
