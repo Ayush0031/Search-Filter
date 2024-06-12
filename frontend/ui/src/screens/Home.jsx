@@ -5,6 +5,8 @@ import Cards from '../components/Cards.jsx'
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { Button, Container, Row, Col, Form } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function Home() {
     const [products, setProducts] = useState([])
     const [categories, setCategories] = useState([])
@@ -12,6 +14,7 @@ export default function Home() {
     const [priceRange, setPriceRange] = useState([100, 1000000]);
     const [searchQuery, setSearchQuery] = useState('');
     const [sortOrder, setSortOrder] = useState(''); 
+    const [suggestions, setSuggestions] = useState([]);
     useEffect(() => {
         const fetchproducts = async () => {
             const data = await axios.get("http://localhost:5001/api/v1/products/all");
@@ -59,6 +62,7 @@ export default function Home() {
             setProducts(sortedProducts);
             setProducts(response.data);
             console.log(response.data);
+            
         } catch (error) {
             alert("Error searching products:", error);
         }
@@ -124,13 +128,13 @@ export default function Home() {
                         </Col>
                     </Row>
                     <Row >
-                        {products.map(d => (
+                        { products.length >0 ? products.map(d => (
                             <Col className="mb-2 mx-2" key={d._id} xs={12} sm={6} md={4} lg={3}>
 
                                 <Cards product={d} />
 
                             </Col>
-                        ))}
+                        )):<h2>No Products Found Try Again!!!!!!!!</h2>}
                     </Row>
                 </Container>
 
