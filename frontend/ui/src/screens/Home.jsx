@@ -14,7 +14,7 @@ export default function Home() {
     const [priceRange, setPriceRange] = useState([100, 1000000]);
     const [searchQuery, setSearchQuery] = useState('');
     const [sortOrder, setSortOrder] = useState(''); 
-    const [suggestions, setSuggestions] = useState([]);
+
     useEffect(() => {
         const fetchproducts = async () => {
             const data = await axios.get("http://localhost:5001/api/v1/products/all");
@@ -60,7 +60,7 @@ export default function Home() {
             }
 
             setProducts(sortedProducts);
-            setProducts(response.data);
+           
             console.log(response.data);
             
         } catch (error) {
