@@ -5,7 +5,6 @@ import Cards from '../components/Cards.jsx'
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { Button, Container, Row, Col, Form } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 export default function Home() {
     const [products, setProducts] = useState([])
@@ -17,7 +16,7 @@ export default function Home() {
 
     useEffect(() => {
         const fetchproducts = async () => {
-            const data = await axios.get("http://localhost:5001/api/v1/products/all");
+            const data = await axios.get("https://search-filter-tfc5.onrender.com/api/v1/products/all");
             setProducts(data.data);
 
             const uniqueCategories = [...new Set(data.data.map(product => product.category))];
@@ -43,7 +42,7 @@ export default function Home() {
     const handleSearch = async () => {
         try {
             const selectedCategoryNames = Object.keys(selectedCategories).filter(category => selectedCategories[category]);
-            const response = await axios.get('http://localhost:5001/api/v1/products/search', {
+            const response = await axios.get('https://search-filter-tfc5.onrender.com/api/v1/products/search', {
                 params: {
                     query: searchQuery,
                     categories: selectedCategoryNames.join(','),
